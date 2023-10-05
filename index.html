@@ -35,22 +35,29 @@ fetch('https://api.openai.com/v1/engines/gpt-3.5-turbo/completions', {
     headers: {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${apiKey}`, // Replace apiKey with your actual API key
-   },
-    body: JSON.stringify({
-        prompt: prompt,
-        max_tokens: 50, // Adjust as needed
-    }),
-})
-.then(response => response.json())
-.then(data => {
-    const generatedText = data.choices[0].text;
-    // Display the generated text on your webpage
-    document.getElementById('output').textContent = generatedText;
-})
-.catch(error => {
-    console.error('Error:', error);
-});
-
-    </script>
-</body>
-</html>
+  },
+        body: JSON.stringify({
+            prompt: prompt,
+            max_tokens: 50, // Adjust as needed
+        }),
+    })
+    .then(response => {
+        if (response.status >= 200 && response.status <= 299) {
+            return response.json();
+        } else {
+            throw new Error(`API request failed with status ${response.status}`);
+        }
+    })
+    .then(data => {
+        if (data.choices && data.choices.length > 0) {
+            const generatedText = data.choices[0].text;
+            // Display the generated text on your webpage
+            document.getElementById('output').textContent = generatedText;
+        } else {
+            console.error('API response is missing expected data.');
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+    });
+}
