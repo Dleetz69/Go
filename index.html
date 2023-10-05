@@ -28,27 +28,27 @@
             // Create a prompt using the message
             const prompt = `Generate a story: ${message}`;
 
-            fetch(endpoint, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${apiKey}`,
-                },
-                body: JSON.stringify({
-                    prompt: prompt,
-                    max_tokens: 50, // Adjust as needed
-                }),
-            })
-            .then(response => response.json())
-            .then(data => {
-                const generatedText = data.choices[0].text;
-                // Display the generated text on your webpage
-                document.getElementById('output').textContent = generatedText;
-            })
-            .catch(error => {
-                console.error('Error:', error);
-            });
-        }
+fetch('https://api.openai.com/v1/engines/gpt-3.5-turbo/completions', {
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${apiKey}`, // Replace apiKey with your actual API key
+    },
+    body: JSON.stringify({
+        prompt: 'Once upon a time...',
+        max_tokens: 50, // Adjust as needed
+    }),
+})
+.then(response => response.json())
+.then(data => {
+    const generatedText = data.choices[0].text;
+    // Display the generated text on your webpage
+    document.getElementById('output').textContent = generatedText;
+})
+.catch(error => {
+    console.error('Error:', error);
+});
+
     </script>
 </body>
 </html>
