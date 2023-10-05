@@ -8,6 +8,35 @@
     <!-- <link rel="stylesheet" href="styles.css"> -->
 </head>
 <body>
+    <script>
+    const apiKey = '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';
+    const endpoint = 'https://api.openai.com/v1/engines/gpt-3.5-turbo/completions';
+
+    const message = 'Once upon a time...'; // Your input text
+    const prompt = `Generate a story: ${message}`;
+
+    fetch(endpoint, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${apiKey}`,
+        },
+        body: JSON.stringify({
+            prompt: prompt,
+            max_tokens: 50, // Adjust as needed
+        }),
+    })
+    .then(response => response.json())
+    .then(data => {
+        const generatedText = data.choices[0].text;
+        // Display the generated text on your webpage
+        document.getElementById('output').textContent = generatedText;
+    })
+    .catch(error => {
+        console.error('Error:', error);
+    });
+</script>
+
     <header>
         <h1>Welcome to My Webpage</h1>
     </header>
